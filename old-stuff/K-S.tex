@@ -1,0 +1,19 @@
+\section{The KS-test}
+The Kolmogorov-Smirnov test: a statistical test to determine if two samples come from the same underlying distribution, see e.g. \citet{hodges1958significance}. We implement this test using the \texttt{scipy.stats.kstest} module\footnote{\href{}{https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.ks\_2samp.html}}.
+
+Here we have run the two-sided K-S test statistic on the distribution of $\Delta$ position angles obtained from the \texttt{kinemetry} analysis. The results are given in Table \ref{tab:K-S-tests}. The statistical significance inferred from the from the K-S test is that a high value of the test statistic, typically > 0.1, together with a low p-value, < 0.1 [TODO: validate these values] indicates that the samples are drawn from different statistical distributions. Here we note that the CPSB and RPSB samples originate from different distributions, and also each sample is from a different distribution from its corresponding control galaxy sample. The Python implementation of the two-sides KS test \texttt{scipy.stats.ks\_2samp} accepts samples of different sizes.
+
+\begin{table}
+\caption{Kolmogorov-Smirnov statistical test on various $\Delta$PA sample distributions. A high value of the K-S statistic > 10\%, together with a low p-value, < 10\% indicates that the samples come from different statistical distributions.}
+\label{tab:K-S-tests}
+\begin{tabular}{llcc}
+\hline
+$\Delta$PA sample 1  & $\Delta$PA sample 2 & K-S statistic & p-value \\
+\hline
+CPSB & RPSB & 0.467 & 0.040 \\
+CPSB & CPSB controls & 0.755 & 0.000 \\
+RPSB & RPSB controls & 0.520 & 0.000 \\
+CPSB controls & RPSB controls & 0.197 & 0.001 \\
+\hline
+\end{tabular}
+\end{table}

@@ -1,0 +1,209 @@
+% mnras_template.tex 
+%
+% LaTeX template for creating an MNRAS paper
+%
+% v3.0 released 14 May 2015
+% (version numbers match those of mnras.cls)
+%
+% Copyright (C) Royal Astronomical Society 2015
+% Authors:
+% Keith T. Smith (Royal Astronomical Society)
+
+% Change log
+%
+% v3.0 May 2015
+%    Renamed to match the new package name
+%    Version number matches mnras.cls
+%    A few minor tweaks to wording
+% v1.0 September 2013
+%    Beta testing only - never publicly released
+%    First version: a simple (ish) template for creating an MNRAS paper
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Basic setup. Most papers should leave these options alone.
+\documentclass[fleqn,usenatbib]{mnras} % mnras
+
+% MNRAS is set in Times font. If you don't have this installed (most LaTeX
+% installations will be fine) or prefer the old Computer Modern fonts, comment
+% out the following line
+\usepackage{newtxtext,newtxmath}
+% Depending on your LaTeX fonts installation, you might get better results with one of these:
+%\usepackage{mathptmx}
+%\usepackage{txfonts}
+
+% Use vector fonts, so it zooms properly in on-screen viewing software
+% Don't change these lines unless you know what you are doing
+\usepackage[T1]{fontenc}
+\usepackage{ae,aecompl}
+
+\usepackage{graphicx}	% Including figure files
+\graphicspath{ {../images/} }   % [added by JP - home, then down 1 level]
+
+
+%%%%% AUTHORS - PLACE YOUR OWN PACKAGES HERE %%%%%
+
+% Only include extra packages if you really need them. Common packages are:
+\usepackage{graphicx}	% Including figure files
+\usepackage{amsmath}	% Advanced maths commands
+\usepackage{amssymb}	% Extra maths symbols
+\usepackage{verbatim}   % added by JP for the TC word count output.
+
+\usepackage{longtable}  % for the Appendix
+
+%\usepackage{geometry}
+%\geometry{
+% a4paper,
+% left=22mm,
+% right=20mm,
+% top=30mm,
+% bottom =22mm
+% }
+%  total={170mm,257mm}
+ 
+
+\usepackage[section]{placeins} %% May need to remove this if too much blank space.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%% AUTHORS - PLACE YOUR OWN COMMANDS HERE %%%%%
+
+% Please keep new commands to a minimum, and use \newcommand not \def to avoid
+% overwriting existing commands. Example:
+%\newcommand{\pcm}{\,cm$^{-2}$}	% per cm-squared
+
+% Please keep new commands to a minimum, and use \newcommand not \def to avoid
+% overwriting existing commands. Example:
+\newcommand{\fluxdensity}{\,W m$^{-2}$}	% watts per square meter.
+\newcommand{\Mpc}{\,Mpc}	% Mega parsecs.
+\newcommand{\Lsun}{\,$L_{\sun}$}	% Solar luminosity.
+\newcommand{\Msun}{\,$M_{\sun}$}	% Solar mass.
+\newcommand{\kms}{\,km s$^{-1}$}	% kilometres per second.
+\newcommand{\ms}{\,m s$^{-1}$}	    % metres per second.
+
+%%% JP added the following:
+
+\newcommand*\diff{\mathop{}\!\mathrm{d}} % upright d's in integrals
+
+\newcommand{\red}[1]{{\textcolor{red}{#1}}}
+\newcommand{\green}[1]{{\textcolor{green}{#1}}}
+\newcommand{\blue}[1]{{\textcolor{blue}{#1}}}
+
+\newcommand{\quickwordcount}[1]{%
+  \immediate\write18{texcount -1 -sum -merge -q #1.tex > #1-words.sum }%
+  \input{#1-words.sum} words%
+}
+
+\newcommand{\quickcharcount}[1]{%
+  \immediate\write18{texcount -1 -sum -merge -char -q #1.tex > #1-chars.sum }%
+  \input{#1-chars.sum} characters (not including spaces)%
+}
+
+\newcommand{\detailtexcount}[1]{%
+  \immediate\write18{texcount -merge -sum -q #1.tex > #1.wcdetail }%
+  \verbatiminput{#1.wcdetail}%
+}
+
+%%%%%%%%%%%%%%%%%%% TITLE PAGE %%%%%%%%%%%%%%%%%%%
+
+% Title of the paper, and the short title which is used in the headers.
+% Keep the title short and informative.
+% \title[Short title, max. 45 characters]{MNRAS \LaTeXe\ Kinematics of PSB galaxies}
+\title[Radon trace profiles - WLS fits]{SDSS-IV MaNGA: Kinematic studies of post-starburst galaxies: detecting signatures of mergers} 
+%[short title]{long title}
+
+% The list of authors, and the short list which is used in the headers.
+% If you need two or more lines of authors, add an extra line using \newauthor
+%%% \author[J. Proctor]{John Proctor$^{1,2}$\thanks{E-mail: jp210@st-andrews.ac.uk}
+%%% \\
+% List of institutions
+%%% $^{1}$School of Physics and Astronomy, University of St Andrews, North Haugh, St Andrews KY16 9SS, UK\\
+%%% $^{2}$Royal Astronomical Society, Burlington House, Piccadilly, London W1J 0BQ, UK\\}
+
+% These dates will be filled out by the publisher
+%%% \date{Accepted XXX. Received YYY; in original form ZZZ}
+
+% Enter the current year, for the copyright statements etc.
+%%% \pubyear{2019}
+
+% Don't change these lines
+\begin{document}
+
+% \input{cover-page.tex} %%% This works!
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% The MNRAS class isn't designed to include a table of contents, but for this document one is useful.
+% I therefore have to do some kludging to make it work without masses of blank space.
+
+
+%%TC:ignore
+\begingroup
+\let\clearpage\relax
+\tableofcontents
+\listoftables
+\listoffigures
+\endgroup
+%%TC:endignore
+
+% \newpage % [JP] remove the comment to remove the column break. 
+
+
+\label{firstpage}
+\pagerange{\pageref{firstpage}--\pageref{lastpage}}
+\maketitle
+
+\newpage
+
+% Abstract of the paper
+\begin{abstract}
+\input{sections/abstract1.tex}
+\end{abstract}
+
+% Select between one and six entries from the list of approved keywords. % Don't make up new ones.
+\begin{keywords}
+methods: data analysis, galaxies: kinematics and dynamics, galaxies: evolution
+\end{keywords}
+
+%%%%%%%%%%%%%%%%% BODY OF PAPER %%%%%%%%%%%%%%%%%%
+
+% \input{sections/intro-new.tex}
+\input{sections/REPORT-BODY.tex}
+\input{sections/histograms.tex}
+\input{sections/WLS-trace-plots.tex}
+
+% \input{sections/data-new.tex}
+
+% \input{sections/methods.tex}
+% \input{sections/Radon-transform.tex}
+
+% \input{sections/results.tex}
+% \input{sections/binning-methods.tex}
+% \input{sections/discussion.tex}
+% \input{sections/future-work.tex}
+
+%TC:ignore
+% \section*{Acknowledgements}
+% \input{sections/acknowlegements.tex}
+%TC:endignore
+
+%%%%%%%%%%%%%%%%%%%% REFERENCES %%%%%%%%%%%%%%%%%%
+% \bibliographystyle{mnras}
+% \bibliography{JPbib2019} 
+
+%%%%%%%%%%%%%%%%% APPENDICES %%%%%%%%%%%%%%%%%%%%%
+%TC:ignore
+% \appendix
+% \input{sections/WLS-trace-plots.tex}
+% \input{appendices/PSB-lists.tex}
+% \input{appendices/Visual-classification-A.tex}
+% \input{appendices/Visual-classification-B.tex}
+%TC:endignore
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% Don't change these lines
+\bsp	% typesetting comment
+\label{lastpage}
+\end{document}
+
+% End of mnras_template.tex

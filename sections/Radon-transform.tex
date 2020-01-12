@@ -1,0 +1,82 @@
+\section{Radon transform analysis}
+\label{sec:methods-II-Radon}
+
+\subsection{Motivation}
+\label{sec:motivation}
+
+Many galaxies display kinematic features in their morphology such as warps, kinematically decoupled cores (KDCs), bars, oval distortions, tidal tails etc. The global kinematic $\Delta$PA${k}$ is single number value, representing a broad average for the the entire galaxy. Finer details of any radial variation across a velocity field can be obtained using the \textbf{Radon transform} method, details of which are presented below. In addition, PSBs have depleted their gas and star formation has shut down. The differential kinematic position angles $\Delta$PA${k}$ cannot be easily measured in gas-poor galaxies like our PSBs. However the Radon transform method can be applied to either or both the gas and stellar velocity fields. For our purposes we apply the Radon transform to the stellar velocity maps (only) of mainly gas-poor PSBs. 
+
+\subsection{Description of the Radon transform}
+
+The Radon transform (RT) is a mathematical transformation of an image devised to reveal internal properties of an object such as structure. The transform method was devised by Johann Radon in 1917 \citep{radon1917determination}. Since then the technique has been applied to many fields, including various branches of astronomy such as microwave, radio and x-ray applications. \citet{deans2007radon} describes many of these applications. Deans' book also includes an English translation of Radon's original German text. In his PhD thesis \cite{7910dc8d5b654c90ac4bc94c67d06f01} applied Radon transforms to the field of digital signal processing and presented algorithms for their implementation. For our present purposes \cite{2018MNRAS.480.2217S} describe the application of the Radon transform method to galaxy kinematic studies. Stark developed IDL\footnote{\href{https://www.harrisgeospatial.com/Software-Technology/IDL}{https://www.harrisgeospatial.com/Software-Technology/IDL}} (Interactive Data Language) code routines to apply the Radon transform to analyse stellar and gas velocity fields obtained from the MaNGA integral field survey. The objective is to quantify radial and other spatial variations in the kinematic position angles (PA$_{k}$).
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\columnwidth]{images/RadonPlots/Radon-transform-Stark.png}
+    \caption[The Radon transform and its coordinate system]{The Radon transform: illustration of the Radon transform and its coordinate system taken from Figure 1 in \citet{2018MNRAS.480.2217S}. Line integrals across a 2-D image in x,y coordinate space are calculated along all possible lines, parameterised by the coordinates [$\theta$, $\rho$]. The left panel shows examples of two solid lines, L$_1$ and L$_2$, which are mapped through the Radon transform function to points $\theta_1$, $\rho_1$ and $\theta_2$, $\rho_2$ in [$\theta$, $\rho$] parameter space in the right-hand panel. Credit: Stark et al. 2018.}
+    \label{fig:RadonTransform}
+\end{figure}
+
+Mathematically the Radon Transform, $R$, is defined as
+\begin{equation}
+    \label{eqn:radon}
+    R(\rho,\theta)=\int_{L}{v(x,y)\, \diff l},
+\end{equation}
+
+where $v(x,y)$ is a 2D velocity field defined in Cartesian coordinates and $\int_{L}$ is the line integral at transformed sky-plane polar coordinates ($\rho,\theta$). This transform is illustrated graphically in Figure \ref{fig:RadonTransform} where lines through an image in 2D velocity space are mapped to a series of points in Radon transform [$\theta,\rho$] space by means of line integrals at various angles about the velocity space axes, and at various radial distances offset from the velocity space origin. 
+
+
+\citet{2018MNRAS.480.2217S} apply a modification to the Radon transform, to obtain the \textit{Absolute} Radon Transform, as defined in Equation (\ref{eqn:radon}), by taking the integral of the absolute values of the velocity field difference of each point $v(x_i,y_i)$ and the mean of all values along the line segment.
+
+\begin{equation}
+    \label{eqn:radon_absolute}
+    R_A=\int{| v(x,y) - \langle v(x,y) \rangle | \, \diff l}.
+\end{equation}
+
+There is another variant to the Absolute Radon Transform described by \citet{2018MNRAS.480.2217S} named the \textit{bounded}, or aperture restricted, Radon transform, R\textsubscript{AB}. Briefly, R\textsubscript{AB} involves placing integration limits $(\pm{r_{ap}})$, known as the Radon aperture, on the integral of Equation \ref{eqn:radon_absolute} in order to limit the number of spaxels across a velocity map that will be used in the integration. \citet{2018MNRAS.480.2217S} developed a suite of IDL algorithms to calculate the Radon transform on an input array representing a velocity field. The Radon transform IDL code is available on GitHub\footnote{\href{https://github.com/dvstark/radon-transform}{https://github.com/dvstark/radon-transform}}. 
+The graphical output of the Radon transform code as applied to a synthetic velocity field is shown in Figure \ref{fig:Radon}.
+
+\begin{figure}
+    \centering
+   	\includegraphics[width=\columnwidth]{images/RadonPlots/example.png}
+    \caption[Model velocity field Radon transform plots]{Example of Radon transform code output applied to a model velocity field. The plots are obtained by running the Radon example code which is publicly available from David Stark's GitHub repository. The left panel shows a synthetic uniform velocity field model, the middle panel shows the the absolute Radon transform of the velocity field and the right panel shows the aperture-restricted absolute transform. We are concerned with the latter, the absolute aperture-restricted Radon transform of stellar and gas velocity fields in this work. Credit: David Stark.}
+    \label{fig:Radon}
+\end{figure}
+
+Following \citet{2018MNRAS.480.2217S} we demonstrate the application of the Radon transform to stellar and gas velocity field data obtained from the MaNGA integral field survey for a selection of CPSB and RPSB galaxies. Figure \ref{fig:RT_8131-6101} shows the Radon transform output for the stellar (left) and gas (right) velocity fields of the central-type PSB 8131-6101. The transform of high velocity regions are displayed in green and low velocity areas in purple. The stellar velocity Radon transform plot (left) reveals a well defined velocity minimum track across the radial (vertical) coordinate, again shown in purple. Notably the right hand panel showing the gas velocity transform reveals few features, probably due to a sparsity of gas in CPSB 8131-6101.
+
+\begin{figure}
+    \centering
+   	\includegraphics[width=\columnwidth]{images/RadonPlots/RT-snips/CPSB-8313-6101-RT-snip.png}
+    \caption[Example of basic Radon transform plots for the gas and velocity fields of CPSB 8131-6101]{Bounded absolute Radon transform plots of the stellar velocity field (left panel) and gas velocity field (right) of the CPSB MaNGA PLATEIFU 8131-6101. The radial coordinate $\rho$ is on the vertical axis and the angular coordinate $\theta$ on the horizontal axis.}
+    \label{fig:RT_8131-6101}
+\end{figure}
+
+% \input{sections/RT-plots.tex}   %% DO WE NEED THIS?
+
+At this point in the project a significant upgrade to the Radon transform code was released on GitHub. The underlying Radon transform code that was run to produce the transformed stellar and gas velocity fields for the CPSB 8131-6101 in Figure \ref{fig:RT_8131-6101} remain unchanged, however the software has been enhanced to produce more sophisticated graphical output. An example of the upgraded graphical output for one of the control sample galaxies MaNGA plateifu 8442-3704 is shown in Figure \ref{fig:8442-3704-complete}.
+
+\begin{figure*}
+    \centering
+    \includegraphics[width=0.9\textwidth]{images/RadonPlots/RT-SNIPS-NEW/8442-3704-complete.png}
+    \caption[Radon transform code output graphics for stellar velocity field of the MaNGA plateifu 8442-3704]{The Absolute Radon transform code output graphics for the stellar velocity field of the galaxy MaNGA plateifu 8442-3704. The left side text block provides some relevant data about the galaxy extracted from the MaNGA \texttt{drpAll} file. The quadrature arrangement of panels to the right show: top left - the SDSS IFU gri image cutout; top right - the stellar velocity field with kinematic position angle PA$_{k}$ superimposed (represented by the magenta line). The orange coloured  bar in the upper left indicates the Radon aperture size in spaxels; bottom left - the absolute value of Radon transform re-scaled from 0 to 1 (as displayed in the colour bar). The locus of the minimum of the transform is plotted in magenta; and bottom right: the Radon trace plot.}
+    \label{fig:8442-3704-complete}
+\end{figure*}
+
+The additional graphical features in the new output format are:
+\begin{itemize}
+\item SDSS 3-colour gri image cutout
+\item Stellar or gas velocity field map (selectable)
+\item Kinematic PA$_{k}$ superimposed on the velocity map
+\item Absolute bounded Radon transform (normalised)
+\item The Radon transform trace profile in [$\rho$,	$\theta$] space
+\end{itemize}
+In addition some useful data for the subject galaxy is output in a text box on the left-hand side.
+
+This Radon transform graphical output for this particular galaxy, MaNGA ID 1-419195 plateifu 8442-3704, reveals some interesting and particularly significant stellar velocity kinematic features. We now turn attention to analysis of the Radon transform output to identify significant kinematic features. We do this by classifying the galaxy in terms of its Radon profile. Classification of Radon transform profiles is discussed in depth in Section \ref{sec:Radon-classification}. 
+
+\input{sections/Radon-classification.tex}
+
+
+
+
